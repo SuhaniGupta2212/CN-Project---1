@@ -6,6 +6,11 @@ class EndDevice extends Device {
 
     void sendData(String data, Hub hub) {
         System.out.println(name + " sending: " + data);
+
+        // LINE ENCODING HERE
+        String encoded = LineEncoding.Manchester(data);
+        System.out.println("Encoded Data: " + encoded);
+
         hub.broadcast(data, this);
     }
 

@@ -13,18 +13,27 @@ class Switch extends Device {
     }
 
     void sendData(String data, EndDevice sender, String destMac) {
+
+        // 🔥 MAC LEARNING HERE
+        System.out.println("Learning MAC: " + sender.macAddress);
         macTable.put(sender.macAddress, sender);
 
+        // 🔥 FLOW CONTROL HERE
+        System.out.println("Sending data...");
+        System.out.println("Waiting for ACK...");
+
         if (macTable.containsKey(destMac)) {
-            EndDevice receiver = macTable.get(destMac);
-            receiver.receiveData(data);
+            System.out.println("Sending directly to " + destMac);
+            macTable.get(destMac).receiveData(data);
         } else {
-            // Broadcast
+            System.out.println("Unknown MAC → Broadcasting...");
             for (EndDevice d : devices) {
                 if (d != sender) {
                     d.receiveData(data);
                 }
             }
         }
+
+        System.out.println("ACK received!");
     }
 }
